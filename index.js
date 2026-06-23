@@ -64,6 +64,22 @@ async function run() {
       res.json(result); 
     });  
 
+app.get("/bookpost", async (req, res) => {
+  const email = req.query.email;
+
+  const result = await bookpostCollection
+    .find({ email: email })
+    .toArray();
+  res.send(result);
+});
+
+ 
+
+
+
+
+
+
 
 
 
