@@ -1,7 +1,7 @@
 
 const express = require('express');
 const dotenv = require('dotenv');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const { createRemoteJWKSet, jwtVerify } = require("jose-cjs");
 
@@ -70,10 +70,26 @@ app.get("/bookpost", async (req, res) => {
   const result = await bookpostCollection
     .find({ email: email })
     .toArray();
-  res.send(result);
+  res.send(result); 
 });
-
+// http://localhost:8080/bookpost?email=sathi@gmail.com
  
+app.patch("/bookpost/:id", async (req, res) => {
+  const {id} = req.params
+  const updateData = req.body
+  // console.log(updateData,'updateData');
+  const result = await bookpostCollection.updateOne(
+    {_id: new ObjectId(id)},
+    {$set: updateData}
+  )
+  res.json(result)
+})
+
+app.delete("/bookpost/:id", async(req, res) => {
+  const id = req.params
+  const result = await bookpostCollection.deleteOne({_id: new ObjectId(id)})
+  res.json(result)
+});
 
 
 
