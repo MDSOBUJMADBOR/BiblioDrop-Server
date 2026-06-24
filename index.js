@@ -56,23 +56,55 @@ async function run() {
 
 
 
+
+
+
+//admin
+ app.get("/bookpost", async(req,res) => {
+const result = await bookpostCollection.find().toArray();
+  res.json(result);
+})
+// app.patch("/bookpost/:id", async (req, res) => {
+//   const { id } = req.params;
+//   const updateData = req.body;
+
+//   const result = await bookpostCollection.updateOne(
+//     { _id: new ObjectId(id) },
+//     { $set: updateData }
+//   );
+
+//   res.json(result);
+// });
+
+
+
+//librarian
  app.post("/bookpost", async (req, res) => {
       const requestData = req.body;
       // console.log(requestData);
-      const result = await bookpostCollection.insertOne(requestData);
-      
+      const result = await bookpostCollection.insertOne(requestData);      
       res.json(result); 
     });  
 
-app.get("/bookpost", async (req, res) => {
-  const email = req.query.email;
+
+
+// app.get("/bookpost", async (req, res) => {
+//   const email = req.query.email;
+//   const result = await bookpostCollection
+//     .find({ email: email })
+//     .toArray();
+//   res.send(result); 
+// });
+app.get("/bookpost/email/:email", async (req, res) => {
+  const email = req.params.email;
 
   const result = await bookpostCollection
     .find({ email: email })
     .toArray();
-  res.send(result); 
+  res.send(result);
 });
-// http://localhost:8080/bookpost?email=sathi@gmail.com
+
+// http://localhost:8080/bookpost/email/sathi@gmail.com
  
 app.patch("/bookpost/:id", async (req, res) => {
   const {id} = req.params
@@ -90,6 +122,9 @@ app.delete("/bookpost/:id", async(req, res) => {
   const result = await bookpostCollection.deleteOne({_id: new ObjectId(id)})
   res.json(result)
 });
+
+
+
 
 
 
