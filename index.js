@@ -52,8 +52,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const db = client.db("BiblioDrop"); 
-      const bookpostCollection = db.collection("bookpost");
-
+    const bookpostCollection = db.collection("bookpost");
+    const userCollection = db.collection("user")
 
 
 
@@ -64,6 +64,12 @@ async function run() {
 const result = await bookpostCollection.find().toArray();
   res.json(result);
 })
+
+app.get("/user", async(req,res ) => {
+  const result = await userCollection.find().toArray();
+  res.json(result);
+})
+
 // app.patch("/bookpost/:id", async (req, res) => {
 //   const { id } = req.params;
 //   const updateData = req.body;
