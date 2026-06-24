@@ -69,7 +69,23 @@ app.get("/user", async(req,res ) => {
   const result = await userCollection.find().toArray();
   res.json(result);
 })
+app.delete("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await userCollection.deleteOne({
+    _id: new ObjectId(id),
+  });
 
+  res.json(result);
+});
+app.patch("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const { role } = req.body;
+  const result = await userCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { role } }
+  );
+  res.json(result);
+});
 // app.patch("/bookpost/:id", async (req, res) => {
 //   const { id } = req.params;
 //   const updateData = req.body;
@@ -128,6 +144,18 @@ app.delete("/bookpost/:id", async(req, res) => {
   const result = await bookpostCollection.deleteOne({_id: new ObjectId(id)})
   res.json(result)
 });
+
+
+// user 
+
+app.get("/bookpost/published", async (req, res) => {
+  const result = await bookpostCollection
+    .find({ status: "publish" }) // ✅ FILTER
+    .toArray();
+
+  res.json(result);
+});
+// http://localhost:8080/bookpost/published
 
 
 
