@@ -201,6 +201,7 @@ app.post("/delivery-request", async (req, res) => {
   }
 });
 
+// librian manage deliveries
 app.get("/delivery-request/email/:email", async (req, res) => {
   const email = req.params.email;
 
@@ -211,8 +212,41 @@ app.get("/delivery-request/email/:email", async (req, res) => {
 });
 // http://localhost:8080/delivery-request/email/sorif@gmail.com
 
+// user side manage delivery
+app.get("/delivery-requests/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const result = await deliveryRequestCollection
+      .find({ requesterEmail: email })
+      .toArray();
+
+    res.send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Server Error" });
+  }
+});
+// http://localhost:8080/delivery-requests/sorna@gmail.com
 
 
+app.patch("/delivery-request/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const result = await deliveryRequestCollection.updateOne(
+    {
+      _id: new ObjectId(id),
+    },
+    {
+      $set: {
+        status,
+      },
+    }
+  );
+
+  res.send(result);
+});
 
 
 
