@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
+ 
 
 // const JWKS = createRemoteJWKSet(new URL(`${process.env.CLIENT_URL}/api/auth/jwks`));
 
@@ -54,7 +54,7 @@ async function run() {
     const db = client.db("BiblioDrop"); 
     const bookpostCollection = db.collection("bookpost");
     const userCollection = db.collection("user")
-
+const deliveryRequestCollection =db.collection("delivery-request");
 
 
 
@@ -138,6 +138,7 @@ app.patch("/bookpost/:id", async (req, res) => {
   )
   res.json(result)
 })
+ 
 
 app.delete("/bookpost/:id", async(req, res) => {
   const id = req.params
@@ -154,8 +155,53 @@ app.get("/bookpost/published", async (req, res) => {
     .toArray();
 
   res.json(result);
+
 });
 // http://localhost:8080/bookpost/published
+
+app.get("/bookpost/published/six", async (req, res) => {
+  const result = await bookpostCollection
+    .find({ status: "publish" })
+    .limit(6)
+    .toArray();
+
+  res.json(result);
+});
+// http://localhost:8080/bookpost/published/six
+
+app.get("/bookpost/published/:id", async (req, res) => {
+  const id = req.params.id;
+
+  const result = await bookpostCollection.findOne({
+    _id: new ObjectId(id),
+    status: "publish",
+  });
+
+  res.json(result);
+});
+
+
+
+
+
+app.post("/delivery-request", async (req, res) => {
+  try {
+    const deliveryInfo = req.body;
+
+    const result = await deliveryRequestCollection.insertOne(
+      deliveryInfo
+    );
+
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Failed to create delivery request",
+    });
+  }
+});
+
 
 
 
