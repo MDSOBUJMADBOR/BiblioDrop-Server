@@ -183,7 +183,6 @@ app.get("/bookpost/published/:id", async (req, res) => {
 
 
 
-
 app.post("/delivery-request", async (req, res) => {
   try {
     const deliveryInfo = req.body;
@@ -202,8 +201,15 @@ app.post("/delivery-request", async (req, res) => {
   }
 });
 
+app.get("/delivery-request/email/:email", async (req, res) => {
+  const email = req.params.email;
 
-
+  const result = await deliveryRequestCollection 
+    .find({ email: email })
+    .toArray();
+  res.send(result);
+});
+// http://localhost:8080/delivery-request/email/sorif@gmail.com
 
 
 
