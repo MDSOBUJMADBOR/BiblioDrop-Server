@@ -259,6 +259,24 @@ app.patch("/delivery-request/:id", async (req, res) => {
 
 
 
+// GET all delivered requests
+app.get("/delivery-request/delivered", async (req, res) => {
+  try {
+    const result = await deliveryRequestCollection
+      .find({ status: "delivered" })
+      .toArray();
+
+    res.send(result);
+  } catch (error) {
+    res.status(500).send({
+      message: "Failed to fetch delivered requests",
+      error: error.message,
+    });
+  }
+});
+
+
+
 
 
 
