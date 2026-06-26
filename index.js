@@ -71,6 +71,7 @@ const deliveryRequestCollection =db.collection("delivery-request");
 
 
 
+
 //admin
  app.get("/bookpost", async(req,res) => {
 const result = await bookpostCollection.find().toArray();
@@ -98,17 +99,6 @@ app.patch("/user/:id", async (req, res) => {
   );
   res.json(result);
 });
-// app.patch("/bookpost/:id", async (req, res) => {
-//   const { id } = req.params;
-//   const updateData = req.body;
-
-//   const result = await bookpostCollection.updateOne(
-//     { _id: new ObjectId(id) },
-//     { $set: updateData }
-//   );
-
-//   res.json(result);
-// });
 
 
 
@@ -121,14 +111,6 @@ app.patch("/user/:id", async (req, res) => {
     });  
 
 
-
-// app.get("/bookpost", async (req, res) => {
-//   const email = req.query.email;
-//   const result = await bookpostCollection
-//     .find({ email: email })
-//     .toArray();
-//   res.send(result); 
-// });
 app.get("/bookpost/email/:email", async (req, res) => {
   const email = req.params.email;
 
@@ -138,12 +120,12 @@ app.get("/bookpost/email/:email", async (req, res) => {
   res.send(result);
 });
 
-// http://localhost:8080/bookpost/email/sathi@gmail.com
+
  
 app.patch("/bookpost/:id", async (req, res) => {
   const {id} = req.params
   const updateData = req.body
-  // console.log(updateData,'updateData');
+  
   const result = await bookpostCollection.updateOne(
     {_id: new ObjectId(id)},
     {$set: updateData}
@@ -159,8 +141,23 @@ app.delete("/bookpost/:id", async(req, res) => {
 });
 
 
-// user 
+app.get("/librarians", async (req, res) => {
+  try {
+    const librarians = await userCollection
+      .find({ role: "librarian" })
+      .limit(3)
+      .toArray();
 
+    res.json(librarians);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch librarians" });
+  }
+});
+
+
+
+
+// user 
 app.get("/bookpost/published", async (req, res) => {
   const result = await bookpostCollection
     .find({ status: "publish" }) // ✅ FILTER
@@ -169,7 +166,7 @@ app.get("/bookpost/published", async (req, res) => {
   res.json(result);
 
 });
-// http://localhost:8080/bookpost/published
+
 
 app.get("/bookpost/published/six", async (req, res) => {
   const result = await bookpostCollection
@@ -179,7 +176,7 @@ app.get("/bookpost/published/six", async (req, res) => {
 
   res.json(result);
 });
-// http://localhost:8080/bookpost/published/six
+
 
 app.get("/bookpost/published/:id", async (req, res) => {
   const id = req.params.id;
@@ -222,7 +219,7 @@ app.get("/delivery-request/email/:email", async (req, res) => {
     .toArray();
   res.send(result);
 });
-// http://localhost:8080/delivery-request/email/sorif@gmail.com
+
 
 // user side manage delivery
 app.get("/delivery-requests/:email", async (req, res) => {
@@ -239,7 +236,7 @@ app.get("/delivery-requests/:email", async (req, res) => {
     res.status(500).send({ message: "Server Error" });
   }
 });
-// http://localhost:8080/delivery-requests/sorna@gmail.com
+
 
 
 app.patch("/delivery-request/:id", async (req, res) => {
