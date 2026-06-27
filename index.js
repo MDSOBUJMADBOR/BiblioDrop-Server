@@ -253,8 +253,7 @@ app.patch("/delivery-request/:id", async (req, res) => {
       },
     }
   );
-
-  res.send(result);
+  res.send(result);  
 });
 
 
