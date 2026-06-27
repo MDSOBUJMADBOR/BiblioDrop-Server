@@ -158,14 +158,64 @@ app.get("/librarians", async (req, res) => {
 
 
 // user 
-app.get("/bookpost/published", async (req, res) => {
+// app.get("/bookpost/published",  async (req, res) => {
+//   const result = await bookpostCollection
+//     .find({ status: "publish" }) // ✅ FILTER
+//     .toArray();
+
+//   res.json(result);
+
+// });
+
+app.get("/bookpost/published",  async (req, res) => {
+  const { page = 1, limit = 8 } = req.query;
+
+  const skip = (Number(page) - 1) * Number(limit);
+
   const result = await bookpostCollection
-    .find({ status: "publish" }) // ✅ FILTER
+    .find({ status: "publish" })
+    .skip(skip)
+    .limit(Number(limit))
     .toArray();
 
-  res.json(result);
+  const totalData = await bookpostCollection.countDocuments({
+    status: "publish",
+  });
 
+  const totalPage = Math.ceil(totalData / Number(limit));
+console.log({
+   data: result,
+    page: Number(page),
+    totalPage,
+    totalData,
 });
+  res.send({
+    data: result,
+    page: Number(page),
+    totalPage,
+    totalData,
+  });
+});
+
+
+
+//  app.get("/seller/products", verifyToken, sellerVerify, async (req, res) => {
+//       const { page = 1, limit = 10 } = req.query;
+//       const skip = (Number(page) - 1) * Number(limit);
+
+//       const result = await productCollection
+//         .find({ userId: req.user.id })
+//         .skip(skip)
+//         .limit(Number(limit))
+//         .toArray();
+//       const totalData = await productCollection.countDocuments({
+//         userId: req.user.id,
+//       });
+//       const totalPage = Math.ceil(totalData / Number(limit));
+
+//       res.send({ data: result, page: Number(page), totalPage });
+//     });
+
 
 
 app.get("/bookpost/published/six", async (req, res) => {
@@ -178,7 +228,7 @@ app.get("/bookpost/published/six", async (req, res) => {
 });
 
 
-app.get("/bookpost/published/:id", async (req, res) => {
+app.get("/bookpost/published/:id",  async (req, res) => {
   const id = req.params.id;
 
   const result = await bookpostCollection.findOne({
@@ -186,7 +236,7 @@ app.get("/bookpost/published/:id", async (req, res) => {
     status: "publish",
   });
 
-  res.json(result);
+  res.json(result); 
 });
 
 
