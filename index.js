@@ -59,10 +59,17 @@ const librarianVerify = async (req, res, next) => {
 
 
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+// async function run() {
+//   try {
+//     // Connect the client to the server	(optional starting in v4.7)
+//     await client.connect();
+
+client.connect(() => {
+  console.log('connecting to Mongo db')
+}).catch(console.dir)
+
+
+
     const db = client.db("BiblioDrop"); 
     const bookpostCollection = db.collection("bookpost");
     const userCollection = db.collection("user")
@@ -130,7 +137,7 @@ app.patch("/bookpost/:id", async (req, res) => {
     {_id: new ObjectId(id)},
     {$set: updateData}
   )
-  res.json(result)
+  res.json(result) 
 })
  
 
@@ -301,13 +308,13 @@ app.get("/delivery-request/delivered", async (req, res) => {
 
 
     // await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
-  }
-}
-run().catch(console.dir);
+//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+//   } finally {
+//     // Ensures that the client will close when you finish/error
+//     // await client.close();
+//   }
+// }
+// run().catch(console.dir);
 
 
 app.get("/", (req, res) => {
@@ -317,3 +324,6 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port} 🚀`);
 });
+
+
+module.exports = app;
