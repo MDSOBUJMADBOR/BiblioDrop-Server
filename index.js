@@ -155,10 +155,7 @@ app.get("/librarians", async (req, res) => {
 });
 
 
-
-
 // user 
-
 
 app.get("/bookpost/published",  async (req, res) => {
   const { page = 1, limit = 8 } = req.query;
@@ -189,10 +186,6 @@ console.log({
     totalData,
   });
 });
-
-
-
-
 
 
 
@@ -307,18 +300,7 @@ app.get("/delivery-request/delivered", async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
