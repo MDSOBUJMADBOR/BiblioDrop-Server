@@ -136,7 +136,7 @@ app.patch("/bookpost/:id", async (req, res) => {
 
 app.delete("/bookpost/:id", async(req, res) => {
   const id = req.params
-  const result = await bookpostCollection.deleteOne({_id: new ObjectId(id)})
+  const result = await bookpostCollection.deleteOne({_id: new ObjectId(id)}) 
   res.json(result)
 });
 
@@ -158,14 +158,7 @@ app.get("/librarians", async (req, res) => {
 
 
 // user 
-// app.get("/bookpost/published",  async (req, res) => {
-//   const result = await bookpostCollection
-//     .find({ status: "publish" }) // ✅ FILTER
-//     .toArray();
 
-//   res.json(result);
-
-// });
 
 app.get("/bookpost/published",  async (req, res) => {
   const { page = 1, limit = 8 } = req.query;
@@ -199,22 +192,7 @@ console.log({
 
 
 
-//  app.get("/seller/products", verifyToken, sellerVerify, async (req, res) => {
-//       const { page = 1, limit = 10 } = req.query;
-//       const skip = (Number(page) - 1) * Number(limit);
 
-//       const result = await productCollection
-//         .find({ userId: req.user.id })
-//         .skip(skip)
-//         .limit(Number(limit))
-//         .toArray();
-//       const totalData = await productCollection.countDocuments({
-//         userId: req.user.id,
-//       });
-//       const totalPage = Math.ceil(totalData / Number(limit));
-
-//       res.send({ data: result, page: Number(page), totalPage });
-//     });
 
 
 
