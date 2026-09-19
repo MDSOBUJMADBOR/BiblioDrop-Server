@@ -194,7 +194,7 @@ app.get("/bookpost/published",  async (req, res) => {
 app.get("/bookpost/published/six", async (req, res) => {
   const result = await bookpostCollection
     .find({ status: "publish" })
-    .limit(6)
+    .limit(8)
     .toArray();
 
   res.json(result);
