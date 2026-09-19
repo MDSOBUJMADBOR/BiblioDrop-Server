@@ -112,7 +112,7 @@ app.patch("/user/:id", async (req, res) => {
 //librarian
  app.post("/bookpost", verifyToken, librarianVerify, async (req, res) => {
       const requestData = req.body;
-      // console.log(requestData);
+     
       const result = await bookpostCollection.insertOne(requestData);      
       res.json(result); 
     });  
@@ -180,12 +180,7 @@ app.get("/bookpost/published",  async (req, res) => {
   });
 
   const totalPage = Math.ceil(totalData / Number(limit));
-console.log({
-   data: result,
-    page: Number(page),
-    totalPage,
-    totalData,
-});
+
   res.send({
     data: result,
     page: Number(page),
@@ -230,7 +225,7 @@ app.post("/delivery-request", async (req, res) => {
 
     res.send(result);
   } catch (error) {
-    console.log(error);
+   
     res.status(500).send({
       success: false,
       message: "Failed to create delivery request",
